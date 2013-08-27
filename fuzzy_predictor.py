@@ -15,7 +15,14 @@ def fetch_fuzzy_class(val,u_v):
     if(val >= u_min and val <= u_max):
       dict_object = {'actual_data' : val, 'fuzzy_class' : u_v.index((u_min,u_max))};
       return dict_object;
-      
+
+def fetch_fuzzy_relations(val,fuzzy_relation_vector):
+  r_list = []
+  for i in range(len(fuzzy_relation_vector)):
+    if(fuzzy_relation_vector[i][0] == val):
+      print fuzzy_relation_vector[i];
+      r_list.append(fuzzy_relation_vector[i]);
+  return r_list;       
 
 def main():
   # 1: Define the universe of discourse
@@ -46,6 +53,26 @@ def main():
   historical_relations_fuzzy = sorted(list(set(historical_relations_fuzzy)),key = itemgetter(0,1));
   print historical_relations_fuzzy;
   # for k = 3:n
-  print historical_data_fuzzified[2:]; 
+  #print historical_data_fuzzified[2:];
+  for j in range(len(historical_data_fuzzified[1:])):
+    val = historical_data_fuzzified[j];
+    print val.get('fuzzy_class');
+    _r_list = fetch_fuzzy_relations(val.get('fuzzy_class'),historical_relations_fuzzy);
+    if(len(_r_list) == 1):
+      print _r_list[0][1];
+      i = _r_list[0][1];
+      historical_data_fuzzified[j+1]['forecasted_data'] = 0.5*(u_vectorized[i][0] + u_vectorized[i][1]);
+    elif(len(_r_list) > 1) :
+      _sum = 0;
+      for _u in _r_list:
+        i = _u[1];
+        _sum += 0.5*(u_vectorized[i][0] + u_vectorized[i][1]);
+      historical_data_fuzzified[j+1]['forecasted_data'] = _sum/len(_r_list);
+    else :
+      i = val.get('fuzzy_class');      
+      historical_data_fuzzified[j+1]['forecasted_data'] = 0.5*(u_vectorized[i][0] + u_vectorized[i][1]);
+  print historical_data_fuzzified;          
+  
+  
 if __name__ == '__main__':
     main();
