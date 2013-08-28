@@ -9,6 +9,7 @@ alabama_university_time_series = [13055,13563,13867,14696,15460,15311,15603,
                                   15861,16807,16919,16388,15433,15497,15145,
                                   15163,15984,16859,18150,18970,19328,19337,
                                   18876];
+import matplotlib.pyplot as plt
 
 def fetch_fuzzy_class(val,u_v):
   for u_min,u_max in u_v:
@@ -72,6 +73,15 @@ def main():
       i = val.get('fuzzy_class');      
       historical_data_fuzzified[j+1]['forecasted_data'] = 0.5*(u_vectorized[i][0] + u_vectorized[i][1]);
   print historical_data_fuzzified;          
+  
+  # Graph Plotting
+  actual = [x.get('actual_data') for x in historical_data_fuzzified[1:]];
+  predicted = [x.get('forecasted_data') for x in historical_data_fuzzified[1:]];
+  
+  print actual;
+  print predicted;
+  plt.plot(range(len(alabama_university_time_series)-1),actual,'r',range(len(alabama_university_time_series)-1),predicted,'b');
+  plt.show();
   
   
 if __name__ == '__main__':
