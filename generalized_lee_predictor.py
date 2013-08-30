@@ -1,5 +1,5 @@
 '''
-Created on Aug 26, 2013
+Created on Aug 27, 2013
 
 @author: Siviero
 '''
@@ -8,29 +8,18 @@ from operator import itemgetter, attrgetter
 from numpy import *
 import scipy as Sci
 import scipy.linalg
+from sklearn.preprocessing import normalize
 
 from general_functions import *
 from input_data import *
 
-"""
-def fetch_fuzzy_class(val,u_v):
-  for u_min,u_max in u_v:
-    if(val >= u_min and val <= u_max):
-      dict_object = {'actual_data' : val, 'fuzzy_class' : u_v.index((u_min,u_max))};
-      return dict_object;
+def normalize_matrix_by_row(input_matrix):
+  return 1; 
 
-def fetch_fuzzy_relations(val,fuzzy_relation_vector):
-  r_list = []
-  for i in range(len(fuzzy_relation_vector)):
-    if(fuzzy_relation_vector[i][0] == val):
-      print fuzzy_relation_vector[i];
-      r_list.append(fuzzy_relation_vector[i]);
-  return r_list;       
-"""
 def main():
   # 1: Define the universe of discourse
   # Method: Round min and max to thousand
-  partition_size = 100;
+  partition_size = 1000;
   umin = math.floor(min(input_time_series)/1000.0) * 1000;
   umax = math.ceil(max(input_time_series)/1000.0) * 1000;
   universe = (umin,umax);
@@ -70,21 +59,61 @@ def main():
   #print historical_relations_fuzzy_weighted;
   #print _teste;
   
-  # Implementation of Lee et al. propposed method, as described in
-  # 'Modified Weighted for Enrollment Forecasting Based on Fuzzy Time Series'
-  # by Muhammad Hisyam Lee, Riswan Efendi & Zuhaimy Ismail
-  # in MATEMATIKA, 2009, Volume 25, Number 1, 67-78
-  for j in range(len(historical_data_fuzzified[1:])):
-    val = historical_data_fuzzified[j];
+  # Implementation of Qiu et al. generalization of Lee et al. predictor, as described in
+  # 'A generalized method for forecasting based on fuzzy time series'
+  # by Wangren Qiu, Xiaodong Liu, Hailin Li
+  # on Expert Systems with Applications 38 (2011) 10446–10453
+  # Algorithm parameters
+  alfa_param = 1.5;
+  l_param = 3;
+  
+  # Build and normalize pertinence matrix
+  pertinence_matrix = [];
+  for j in range(len(input_time_series)):
+    ts_val = input_time_series[j];
+    _currently_fuzzy = [];    
+    for i in range(len(u_vectorized)):    
+      # needs to include alfa parameter in consideration
+      _currently_fuzzy.append((fuzzy_pertinence_in_tuple(ts_val, u_vectorized[i], u_vectorized))**alfa_param);      
+    pertinence_matrix.append(_currently_fuzzy);
+  
+  # consider only l_param fuzzy sets on prediction
+  pertinence_matrix = generalize_discard_irrelevant_values(pertinence_matrix,l_param);
+  #print pertinence_matrix[5:6];  
+  pertinence_matrix = mat(pertinence_matrix);
+  #print pertinence_matrix;
+  normalized_pertinence_matrix = normalize(pertinence_matrix,norm='l1',axis=1);
+  #print normalized_pertinence_matrix;  
+  
+  # process relation matrix
+  nPartitions = len(u_vectorized);
+  R_lee = zeros([nPartitions,nPartitions]); 
+  for i in historical_relations_fuzzy_weighted:
+    _tuple = i[0];
+    R_lee[_tuple[0]][_tuple[1]] = i[1];
+  for i in range(len(R_lee)):
+    val = R_lee[i];
+    if any(val) == False:
+      R_lee[i][i] = 1;              
+  R_lee_normalized = normalize(R_lee, norm='l1', axis=1);
+  print R_lee_normalized;
+  
+  
+  # Generating midpoint vector
+  midpoint_vector = [];
+  for i in u_vectorized:
+    midpoint_vector.append(get_midpoint(i));
+  #print midpoint_vector;
     
-    weight_list = mat([i[1] for i in historical_relations_fuzzy_weighted if(i[0][0] == val.get('fuzzy_class'))]);
-    weight_list /= sum(weight_list);
-    mid_points = mat([0.5*(u_vectorized[i[0][1]][0] + u_vectorized[i[0][1]][1]) for i in historical_relations_fuzzy_weighted if(i[0][0] == val.get('fuzzy_class'))]);
-    f_old = float((weight_list*mid_points.T)[0][0]);
-    _tmp = u_vectorized[val.get('fuzzy_class')];
-    diff = input_time_series[j] - (0.5*(_tmp[0] + _tmp[1]));
-    historical_data_fuzzified[j+1]['forecasted_data'] = f_old + diff;
-      
+  """
+    Prediction algorithm
+  """
+  for i in range(len(normalized_pertinence_matrix)-1):
+    #print normalized_pertinence_matrix[i:i+1];    
+    #print (R_lee_normalized*(mat(midpoint_vector)).T);
+    #forecasted_data.append(float(normalized_pertinence_matrix[i:i+1]*(R_lee_normalized*(mat(midpoint_vector)).T)));
+    historical_data_fuzzified[i+1]['forecasted_data'] = float(normalized_pertinence_matrix[i:i+1]*(R_lee_normalized*(mat(midpoint_vector)).T));  
+  
   # Graph Plotting
   plot_comparison_graph(historical_data_fuzzified);
   
