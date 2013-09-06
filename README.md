@@ -10,7 +10,7 @@ Algorithms are refered to by the paper's author name, such as Chen, Lee et al., 
 1. [x] [Chen, S. M., "__Forecasting enrollments based on fuzzy time series__", *Fuzzy Sets and Systems*, Volume 81, Issue 3, 12 August 1996, Pages 311–319][chen1996]
 1. [x] [Lee, M. H.,  Ismail, Z. and Efendi, R. "__Modified weighted for enrollment forecasting based on fuzzy time series__", *MATEMATIKA*, 25 (1), 2009. pp. 67-78.][lee2009]
 1. [x] [Qiu W., Liu X., Li H., "__A generalized method for forecasting based on fuzzy time series__", *Expert Systems with Applications*, Volume 38, Issue 8, August 2011, Pages 10446–10453][qiu2011]
-1. [ ] [Lee L.-W. , Wang L.-H. , Chen S.-M. and Leu Y.-H., "__Handling Forecasting Problems Based on Two-Factors High-Order Fuzzy Time Series__", *IEEE Transactions On Fuzzy Systems*, Vol. 14, No. 3, June 2006, Pages 468-477][lee2006]
+1. [x] [Lee L.-W. , Wang L.-H. , Chen S.-M. and Leu Y.-H., "__Handling Forecasting Problems Based on Two-Factors High-Order Fuzzy Time Series__", *IEEE Transactions On Fuzzy Systems*, Vol. 14, No. 3, June 2006, Pages 468-477][lee2006]
 1. [ ] [Leu Y., Lee C.-P., Jou Y.-Z., "__A distance-based fuzzy time series model for exchange rates forecasting__", *Expert Systems with Applications*, Volume 36, Issue 4, May 2009, Pages 8107–8114][leu2009]
 
 More to be added soon.

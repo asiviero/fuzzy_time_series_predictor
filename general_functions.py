@@ -23,6 +23,9 @@ def fetch_fuzzy_relations(val,fuzzy_relation_vector):
 def get_midpoint(ptuple):
   return 0.5*(ptuple[0]+ptuple[1]);
 
+def get_midpoint_vector(tuple_vector):
+  return [get_midpoint(x) for x in tuple_vector];
+
 def get_length(ptuple):
   return ptuple[1]-ptuple[0];
 '''def approximate_universe_exp(l_values):
