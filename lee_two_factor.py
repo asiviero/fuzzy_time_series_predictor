@@ -133,7 +133,7 @@ def main():
   _tmp = (3*first_historical_data_fuzzified[i-1]['forecasted_data'] + 2*first_historical_data_fuzzified[i-2]['forecasted_data'] + first_historical_data_fuzzified[i-3]['forecasted_data'])/6;
   first_historical_data_fuzzified.append({'forecasted_data': _tmp});  
   # Graph Plotting
-  plot_comparison_graph(first_historical_data_fuzzified);
+  plot_comparison_graph(first_historical_data_fuzzified,'Lee, Wang, Chen e Leu',['actual','forecasted']);
   
 if __name__ == '__main__':
     main();

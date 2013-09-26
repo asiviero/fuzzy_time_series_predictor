@@ -86,7 +86,7 @@ def main():
     historical_data_fuzzified[j+1]['forecasted_data'] = f_old + diff;
       
   # Graph Plotting
-  plot_comparison_graph(historical_data_fuzzified);
+  plot_comparison_graph(historical_data_fuzzified,'Lee, Ismail e Efendi',['actual','forecasted']);
   
   
 if __name__ == '__main__':

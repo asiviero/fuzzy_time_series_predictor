@@ -37,10 +37,12 @@ def get_length(ptuple):
   universe = (umin,umax);
   '''
 
-def plot_comparison_graph(historical_data_forecasted):
+def plot_comparison_graph(historical_data_forecasted,title,legend):
   actual = [x.get('actual_data') for x in historical_data_forecasted[1:]];
   predicted = [x.get('forecasted_data') for x in historical_data_forecasted[1:]];
   plt.plot(range(len(actual)),actual,'r',range(len(actual)),predicted,'b');
+  plt.title(title);
+  plt.legend(legend);
   plt.show();
   
 def fuzzy_pertinence_in_tuple(value,ptuple,tuple_list):

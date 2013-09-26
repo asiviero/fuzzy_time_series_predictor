@@ -62,10 +62,10 @@ def main():
   # Implementation of Qiu et al. generalization of Lee et al. predictor, as described in
   # 'A generalized method for forecasting based on fuzzy time series'
   # by Wangren Qiu, Xiaodong Liu, Hailin Li
-  # on Expert Systems with Applications 38 (2011) 10446–10453
+  
   # Algorithm parameters
-  alfa_param = 1.5;
-  l_param = 3;
+  alfa_param = 1;
+  l_param = 2;
   
   # Build and normalize pertinence matrix
   pertinence_matrix = [];
@@ -115,7 +115,7 @@ def main():
     historical_data_fuzzified[i+1]['forecasted_data'] = float(normalized_pertinence_matrix[i:i+1]*(R_lee_normalized*(mat(midpoint_vector)).T));  
   
   # Graph Plotting
-  plot_comparison_graph(historical_data_fuzzified);
+  plot_comparison_graph(historical_data_fuzzified,'Qiu, Liu e Li',['actual','forecasted']);
   
   
 if __name__ == '__main__':
