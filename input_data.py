@@ -30,4 +30,21 @@ taipei_cloud_dens_time_series = [36,23,23,10,13,30,45,35,26,21,43,40,30,29,30,46
                                  50,53,63,36,76,55,31,31,25,14,45,38,24,19,39,14,
                                  3,38,70,71,70,40,30,34,59,83,38];
 
-input_time_series = alabama_university_time_series; 
+#input_time_series = alabama_university_time_series; 
+
+
+import numpy as np
+import pandas as pd
+import datetime as dt
+
+# AUDUSD Daily Values - Open, High, Low, Close, EMA-6, EMA-20
+# Read CSV
+audusd_daily_df = pd.read_csv('AUDUSDDaily.csv',sep='\t',index_col=0,parse_dates=True);
+# Discard 
+audusd_daily_df = audusd_daily_df.dropna(how = 'any');
+# Convert EMA-20 to np.float64
+audusd_ema20_float64 = np.asfarray(audusd_daily_df['EMA(20)'][:50]);
+#print taipei_temp_time_series;
+#print audusd_ema20_float64;
+
+input_time_series = alabama_university_time_series;
